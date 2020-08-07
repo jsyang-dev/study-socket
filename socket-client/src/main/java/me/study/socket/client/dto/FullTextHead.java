@@ -21,5 +21,6 @@ public class FullTextHead {
     private String workType;
 
     @FullText(14)
-    private LocalDateTime sendDate;
+    @Builder.Default
+    private LocalDateTime sendDate = LocalDateTime.now();
 }

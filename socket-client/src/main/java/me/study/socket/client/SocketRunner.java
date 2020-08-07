@@ -6,11 +6,10 @@ import me.study.socket.client.common.SocketSender;
 import me.study.socket.client.dto.RequestDto;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class SocketRunner implements ApplicationRunner {
 
