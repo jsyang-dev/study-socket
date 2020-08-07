@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: socket-client
+
+app:
+  socket-server:
+    host: localhost
+    port: 8000
+
+logging:
+  level:
+    me.study.socket.client: DEBUG
+
+
