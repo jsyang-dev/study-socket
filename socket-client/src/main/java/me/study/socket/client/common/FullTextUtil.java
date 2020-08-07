@@ -21,13 +21,13 @@ public class FullTextUtil {
         Field[] fields = instance.getClass().getDeclaredFields();
         AtomicInteger length = new AtomicInteger();
 
-        getFullText(instance, superFields, fullText, length);
-        getFullText(instance, fields, fullText, length);
+        buildFullText(instance, superFields, fullText, length);
+        buildFullText(instance, fields, fullText, length);
 
         return fullText.insert(0, fillNumber(String.valueOf(length.addAndGet(LEN_FIELD_SIZE)), LEN_FIELD_SIZE)).toString();
     }
 
-    private <T> void getFullText(T instance, Field[] superFields, StringBuilder sb, AtomicInteger length) {
+    private <T> void buildFullText(T instance, Field[] superFields, StringBuilder sb, AtomicInteger length) {
 
         for (Field field : superFields) {
             Optional.ofNullable(field.getAnnotation(FullText.class))
