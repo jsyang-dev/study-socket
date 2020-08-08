@@ -13,5 +13,3 @@ app:
 logging:
   level:
     me.study.socket.client: DEBUG
-
-

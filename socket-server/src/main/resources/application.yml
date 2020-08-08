@@ -1,1 +1,12 @@
+spring:
+  application:
+    name: socket-server
 
+app:
+  socket-server:
+    port: 8000
+    enable: true
+
+logging:
+  level:
+    me.study.socket.server: DEBUG
