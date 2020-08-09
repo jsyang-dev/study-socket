@@ -26,6 +26,6 @@ public class SocketRunner implements ApplicationRunner {
                 .applyAmount(100000000L)
                 .build();
 
-        System.out.println(socketSender.send(fullTextUtil.makeFullText(requestDto)));
+        System.out.println(socketSender.send(fullTextUtil.dtoToFullText(requestDto)));
     }
 }

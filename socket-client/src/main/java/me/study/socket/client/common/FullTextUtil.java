@@ -16,7 +16,7 @@ public class FullTextUtil {
 
     public static final int LEN_FIELD_SIZE = 4;
 
-    public <T> String makeFullText(T instance) {
+    public <T> String dtoToFullText(T instance) {
 
         StringBuilder fullText = new StringBuilder();
         Field[] superFields = instance.getClass().getSuperclass().getDeclaredFields();
@@ -89,5 +89,9 @@ public class FullTextUtil {
             }
         }
         return sb.toString();
+    }
+
+    public <T> T fullTextToDto(String fullText) {
+        return null;
     }
 }

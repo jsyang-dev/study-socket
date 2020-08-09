@@ -18,5 +18,5 @@ public class RequestDto extends FullTextHead {
     private String name;
 
     @FullText(10)
-    private Long applyAmount;
+    private Long requestAmount;
 }
