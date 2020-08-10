@@ -23,15 +23,15 @@ public class FullTextUtil {
         Field[] fields = instance.getClass().getDeclaredFields();
         AtomicInteger length = new AtomicInteger();
 
-        buildFullText(instance, superFields, fullText, length);
-        buildFullText(instance, fields, fullText, length);
+        makeFullText(instance, superFields, fullText, length);
+        makeFullText(instance, fields, fullText, length);
 
         return fullText.insert(0, fillNumber(String.valueOf(length.addAndGet(LEN_FIELD_SIZE)), LEN_FIELD_SIZE)).toString();
     }
 
-    private <T> void buildFullText(T instance, Field[] superFields, StringBuilder sb, AtomicInteger length) {
+    private <T> void makeFullText(T instance, Field[] fields, StringBuilder sb, AtomicInteger length) {
 
-        for (Field field : superFields) {
+        for (Field field : fields) {
             Optional.ofNullable(field.getAnnotation(FullText.class))
                     .ifPresent(annotation -> {
                         String fieldValue = getFieldValue(field, instance, annotation.value());
@@ -91,7 +91,63 @@ public class FullTextUtil {
         return sb.toString();
     }
 
-    public <T> T fullTextToDto(String fullText) {
-        return null;
+    public <T> T fullTextToDto(String fullText, Class<T> clazz) {
+
+        final T instance;
+        Field[] superFields = clazz.getSuperclass().getDeclaredFields();
+        Field[] fields = clazz.getDeclaredFields();
+        AtomicInteger position = new AtomicInteger(LEN_FIELD_SIZE);
+
+        int length = Integer.parseInt(fullText.substring(0, LEN_FIELD_SIZE));
+        if (length != fullText.length()) {
+            throw new RuntimeException("Invalid full text");
+        }
+
+        try {
+            instance = clazz.newInstance();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException("Cannot make instance");
+        }
+
+        makeDto(fullText, instance, superFields, position);
+        makeDto(fullText, instance, fields, position);
+
+        return instance;
+    }
+
+    private <T> void makeDto(String fullText, T instance, Field[] superFields, AtomicInteger position) {
+
+        for (Field field : superFields) {
+            Optional.ofNullable(field.getAnnotation(FullText.class))
+                    .ifPresent(annotation -> {
+                        field.setAccessible(true);
+                        try {
+                            field.set(instance,
+                                    castFieldValue(
+                                            fullText.substring(position.get(), position.get() + annotation.value()),
+                                            field.getType()
+                                    )
+                            );
+                        } catch (IllegalAccessException e) {
+                            log.error(e.getMessage());
+                        }
+                        position.addAndGet(annotation.value());
+                    });
+        }
+    }
+
+    private <T> T castFieldValue(String value, Class<T> type) {
+
+        if (type == LocalDateTime.class) {
+            return type.cast(LocalDateTime.parse(value, DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+        }
+        if (type == Boolean.class) {
+            return type.cast("1".equals(value)  ? Boolean.TRUE : Boolean.FALSE);
+        }
+        if (type == Long.class) {
+            return type.cast(Long.valueOf(value));
+        }
+        return type.cast(value);
     }
 }

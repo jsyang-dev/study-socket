@@ -7,6 +7,9 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import me.study.socket.client.annotation.FullText;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @SuperBuilder
@@ -14,9 +17,11 @@ import me.study.socket.client.annotation.FullText;
 @AllArgsConstructor
 public class RequestDto extends FullTextHead {
 
+    @NotBlank
     @FullText(10)
     private String name;
 
+    @NotNull
     @FullText(10)
     private Long requestAmount;
 }

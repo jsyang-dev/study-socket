@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.study.socket.client.common.FullTextUtil;
 import me.study.socket.client.common.SocketSender;
 import me.study.socket.client.dto.RequestDto;
+import me.study.socket.client.dto.ResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +15,9 @@ public class WorkServiceImpl implements WorkService {
     private final FullTextUtil fullTextUtil;
 
     @Override
-    public String work(RequestDto requestDto) {
-        return socketSender.send(fullTextUtil.dtoToFullText(requestDto));
+    public ResponseDto work(RequestDto requestDto) {
+
+        String resFullText = socketSender.send(fullTextUtil.dtoToFullText(requestDto));
+        return fullTextUtil.fullTextToDto(resFullText, ResponseDto.class);
     }
 }

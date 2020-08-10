@@ -25,7 +25,7 @@ public class SocketSender {
 
     public String send(String fullText) {
 
-        String receivedText = null;
+        String responseText = null;
         log.debug("[Send] " + fullText);
 
         try (Socket socket = new Socket(host, port)) {
@@ -37,8 +37,8 @@ public class SocketSender {
 
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            receivedText = reader.readLine();
-            log.debug("[Receive] " + receivedText);
+            responseText = reader.readLine();
+            log.debug("[Receive] " + responseText);
 
         } catch (UnknownHostException e) {
             System.out.println("Server not found: " + e.getMessage());
@@ -46,6 +46,6 @@ public class SocketSender {
             System.out.println("I/O error: " + e.getMessage());
         }
 
-        return receivedText;
+        return responseText;
     }
 }

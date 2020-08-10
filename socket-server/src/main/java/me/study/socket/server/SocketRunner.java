@@ -1,5 +1,6 @@
 package me.study.socket.server;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -32,6 +33,7 @@ import java.net.Socket;
  */
 
 @Component
+@Slf4j
 public class SocketRunner implements ApplicationRunner {
 
     @Value("${app.socket-server.port}")
@@ -45,11 +47,11 @@ public class SocketRunner implements ApplicationRunner {
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
 
-            System.out.println("Server is listening on port " + port);
+            log.info("Server is listening on port " + port);
 
             while (enable) {
                 Socket socket = serverSocket.accept();
-                System.out.println("[ " + socket.getInetAddress() + " ] client connected");
+                log.info("[" + socket.getInetAddress() + "] client connected");
 
                 InputStream input = socket.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -59,7 +61,7 @@ public class SocketRunner implements ApplicationRunner {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    System.out.println("Message received: " + line);
+                    log.info("[" + socket.getInetAddress() + "] Message received: " + line);
 
                     if ("A001".equals(line.substring(4, 8))) {
                         writer.println("0033B0012020080709300010090000000");
@@ -67,9 +69,8 @@ public class SocketRunner implements ApplicationRunner {
                 }
             }
 
-        } catch (IOException ex) {
-            System.out.println("Server exception: " + ex.getMessage());
-            ex.printStackTrace();
+        } catch (IOException e) {
+            log.error("Server exception: " + e.getMessage());
         }
     }
 }

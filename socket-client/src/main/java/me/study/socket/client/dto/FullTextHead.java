@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import me.study.socket.client.annotation.FullText;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class FullTextHead {
 
+    @NotBlank
     @FullText(4)
     private String workType;
 

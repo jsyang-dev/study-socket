@@ -1,7 +1,8 @@
 package me.study.socket.client.service;
 
 import me.study.socket.client.dto.RequestDto;
+import me.study.socket.client.dto.ResponseDto;
 
 public interface WorkService {
-    String work(RequestDto requestDto);
+    ResponseDto work(RequestDto requestDto);
 }
