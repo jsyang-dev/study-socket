@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class FullTextUtil {
 
-    public static final int LEN_FIELD_SIZE = 4;
+    public static final int SIZE_OF_LEN_FIELD = 4;
 
     public <T> String dtoToFullText(T instance) {
 
@@ -26,7 +26,7 @@ public class FullTextUtil {
         makeFullText(instance, superFields, fullText, length);
         makeFullText(instance, fields, fullText, length);
 
-        return fullText.insert(0, fillNumber(String.valueOf(length.addAndGet(LEN_FIELD_SIZE)), LEN_FIELD_SIZE)).toString();
+        return fullText.insert(0, fillNumber(String.valueOf(length.addAndGet(SIZE_OF_LEN_FIELD)), SIZE_OF_LEN_FIELD)).toString();
     }
 
     private <T> void makeFullText(T instance, Field[] fields, StringBuilder sb, AtomicInteger length) {
@@ -96,9 +96,9 @@ public class FullTextUtil {
         final T instance;
         Field[] superFields = clazz.getSuperclass().getDeclaredFields();
         Field[] fields = clazz.getDeclaredFields();
-        AtomicInteger position = new AtomicInteger(LEN_FIELD_SIZE);
+        AtomicInteger position = new AtomicInteger(SIZE_OF_LEN_FIELD);
 
-        int length = Integer.parseInt(fullText.substring(0, LEN_FIELD_SIZE));
+        int length = Integer.parseInt(fullText.substring(0, SIZE_OF_LEN_FIELD));
         if (length != fullText.length()) {
             throw new RuntimeException("Invalid full text");
         }
