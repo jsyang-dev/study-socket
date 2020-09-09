@@ -23,29 +23,31 @@ public class SocketSender {
     @Value("${app.socket-server.port}")
     private int port;
 
-    public String send(String fullText) {
+    public String send(String text) {
 
-        String responseText = null;
-        log.debug("[Send] " + fullText);
+        String receivedText = null;
+        log.debug("[Send] \"" + text + "\"");
 
         try (Socket socket = new Socket(host, port)) {
             socket.setSoTimeout(5000);
 
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
-            writer.println(fullText);
+            writer.println(text);
 
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            responseText = reader.readLine();
-            log.debug("[Receive] " + responseText);
+            receivedText = reader.readLine();
+            log.debug("[Receive] \"" + receivedText + "\"");
 
         } catch (UnknownHostException e) {
-            System.out.println("Server not found: " + e.getMessage());
+            log.error("Server not found: " + e.toString());
         } catch (IOException e) {
-            System.out.println("I/O error: " + e.getMessage());
+            log.error("I/O Exception: " + e.toString());
+        } catch (Exception e) {
+            log.error(e.toString());
         }
 
-        return responseText;
+        return receivedText;
     }
 }

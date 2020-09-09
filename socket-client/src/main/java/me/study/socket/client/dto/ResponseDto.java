@@ -6,7 +6,7 @@ import me.study.socket.client.annotation.FullText;
 
 @Getter
 @ToString
-public class ResponseDto extends FullTextHead {
+public class ResponseDto extends CommonDto {
 
     @FullText(1)
     private Boolean approvalYn;

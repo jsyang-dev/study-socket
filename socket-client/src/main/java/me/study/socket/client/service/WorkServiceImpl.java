@@ -1,7 +1,7 @@
 package me.study.socket.client.service;
 
 import lombok.RequiredArgsConstructor;
-import me.study.socket.client.common.FullTextUtil;
+import me.study.socket.client.common.FullTextConverter;
 import me.study.socket.client.common.SocketSender;
 import me.study.socket.client.dto.RequestDto;
 import me.study.socket.client.dto.ResponseDto;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class WorkServiceImpl implements WorkService {
 
     private final SocketSender socketSender;
-    private final FullTextUtil fullTextUtil;
+    private final FullTextConverter fullTextUtil;
 
     @Override
     public ResponseDto work(RequestDto requestDto) {

@@ -70,7 +70,7 @@ public class SocketRunner implements ApplicationRunner {
             }
 
         } catch (IOException e) {
-            log.error("Server exception: " + e.getMessage());
+            log.error("Server exception: " + e.toString());
         }
     }
 }

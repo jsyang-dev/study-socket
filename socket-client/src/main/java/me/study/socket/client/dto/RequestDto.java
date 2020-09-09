@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestDto extends FullTextHead {
+public class RequestDto extends CommonDto {
 
     @NotBlank
     @FullText(10)

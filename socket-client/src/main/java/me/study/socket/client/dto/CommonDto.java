@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FullTextHead {
+public class CommonDto {
 
     @NotBlank
     @FullText(4)

@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @Slf4j
-public class FullTextUtil {
+public class FullTextConverter {
 
     public static final int SIZE_OF_LEN_FIELD = 4;
 
@@ -57,18 +57,18 @@ public class FullTextUtil {
             return fillText((String) field.get(instance), length);
 
         } catch (IllegalAccessException e) {
-            log.error(e.getMessage());
+            log.error(e.toString());
         }
 
         return fillText("_", length);
     }
 
     private String fillText(String text, int length) {
-        return fillChars(text, length, ' ', true);
+        return fillChars(text, length, ' ', false);
     }
 
     private String fillNumber(String text, int length) {
-        return fillChars(text, length, '0', false);
+        return fillChars(text, length, '0', true);
     }
 
     private String fillChars(String text, int length, char fillChar, boolean alignRight) {
@@ -83,9 +83,9 @@ public class FullTextUtil {
         StringBuilder sb = new StringBuilder(text);
         while (sb.length() < length) {
             if (alignRight) {
-                sb.append(fillChar);
-            } else {
                 sb.insert(0, fillChar);
+            } else {
+                sb.append(fillChar);
             }
         }
         return sb.toString();
@@ -106,7 +106,7 @@ public class FullTextUtil {
         try {
             instance = clazz.newInstance();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.toString());
             throw new RuntimeException("Cannot make instance");
         }
 
@@ -130,7 +130,7 @@ public class FullTextUtil {
                                     )
                             );
                         } catch (IllegalAccessException e) {
-                            log.error(e.getMessage());
+                            log.error(e.toString());
                         }
                         position.addAndGet(annotation.value());
                     });
