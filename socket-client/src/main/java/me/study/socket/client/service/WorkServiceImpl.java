@@ -17,7 +17,7 @@ public class WorkServiceImpl implements WorkService {
     @Override
     public ResponseDto work(RequestDto requestDto) {
 
-        String resFullText = socketSender.send(fullTextUtil.dtoToFullText(requestDto));
-        return fullTextUtil.fullTextToDto(resFullText, ResponseDto.class);
+        String resFullText = socketSender.send(fullTextUtil.objectToFullText(requestDto));
+        return fullTextUtil.fullTextToObject(resFullText, ResponseDto.class);
     }
 }

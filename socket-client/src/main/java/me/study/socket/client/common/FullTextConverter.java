@@ -16,7 +16,7 @@ public class FullTextConverter {
 
     public static final int SIZE_OF_LEN_FIELD = 4;
 
-    public <T> String dtoToFullText(T instance) {
+    public <T> String objectToFullText(T instance) {
 
         StringBuilder fullText = new StringBuilder();
         Field[] superFields = instance.getClass().getSuperclass().getDeclaredFields();
@@ -91,7 +91,7 @@ public class FullTextConverter {
         return sb.toString();
     }
 
-    public <T> T fullTextToDto(String fullText, Class<T> clazz) {
+    public <T> T fullTextToObject(String fullText, Class<T> clazz) {
 
         final T instance;
         Field[] superFields = clazz.getSuperclass().getDeclaredFields();
@@ -110,13 +110,51 @@ public class FullTextConverter {
             throw new RuntimeException("Cannot make instance");
         }
 
-        makeDto(fullText, instance, superFields, position);
-        makeDto(fullText, instance, fields, position);
+        makeObject(fullText, instance, superFields, position);
+        makeObject(fullText, instance, fields, position);
 
         return instance;
     }
 
-    private <T> void makeDto(String fullText, T instance, Field[] superFields, AtomicInteger position) {
+//    public <T> T fullTextToObject(String fullText, Class<T> clazz) {
+//
+//        int length = Integer.parseInt(fullText.substring(0, SIZE_OF_LEN_FIELD));
+//        int totalLength;
+//
+//        try {
+//            totalLength = fullText.getBytes(CHARSET_EUC_KR).length;
+//            if (length != totalLength - SIZE_OF_LEN_FIELD) {
+//                throw new RuntimeException("Invalid full text");
+//            }
+//        } catch (UnsupportedEncodingException e) {
+//            log.error(e.toString());
+//        }
+//
+//        final T instance;
+//        try {
+//            instance = clazz.newInstance();
+//        } catch (Exception e) {
+//            log.error(e.toString());
+//            throw new RuntimeException("Cannot make instance");
+//        }
+//
+//        AtomicInteger position = new AtomicInteger(SIZE_OF_LEN_FIELD);
+//        for (Field field : clazz.getDeclaredFields()) {
+//            Class<?> fieldType = field.getType();
+//            Field[] subFields = fieldType.getDeclaredFields();
+//            field.setAccessible(true);
+//
+//            try {
+//                field.set(instance, makeObject(fullText, fieldType.newInstance(), subFields, position));
+//            } catch (Exception e) {
+//                log.error(e.toString());
+//            }
+//        }
+//
+//        return instance;
+//    }
+
+    private <T> void makeObject(String fullText, T instance, Field[] superFields, AtomicInteger position) {
 
         for (Field field : superFields) {
             Optional.ofNullable(field.getAnnotation(FullText.class))
